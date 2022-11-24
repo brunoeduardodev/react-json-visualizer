@@ -1,6 +1,6 @@
 import React from "react";
 import { ValidJSON } from "../../../types";
-import { PrimitiveRenderer } from "./PrimitiveRenderer";
+import { ValueRenderer } from "./ValueRenderer";
 
 type Props = {
   data: ValidJSON;
@@ -12,7 +12,7 @@ export const TreeRenderer = ({ data }: Props) => {
       {typeof data === "object" && data !== null ? (
         JSON.stringify(data)
       ) : (
-        <PrimitiveRenderer data={data} />
+        <ValueRenderer data={data} />
       )}
     </pre>
   );

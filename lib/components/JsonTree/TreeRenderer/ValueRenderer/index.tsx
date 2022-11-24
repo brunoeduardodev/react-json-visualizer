@@ -9,8 +9,7 @@ type Props = {
   data: Primitive;
 };
 
-export const PrimitiveRenderer = ({ data }: Props) => {
-  console.log({ data });
+export const ValueRenderer = ({ data }: Props) => {
   if (typeof data === "string") {
     return <StringRenderer data={data} />;
   }
