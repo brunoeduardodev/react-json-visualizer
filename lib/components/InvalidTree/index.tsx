@@ -22,6 +22,8 @@ const Text = styled("p", {
   fontFamily: "sans-serif",
 });
 
+type Test = string;
+
 export const InvalidTree = () => {
   return (
     <Container>

@@ -1,6 +1,6 @@
 import React from "react";
-import { safeParse } from "../utils/safeParse";
-import { InvalidTree } from "./InvalidTree";
+import { safeParse } from "../../utils/safeParse";
+import { InvalidTree } from "../InvalidTree";
 
 type Props = {
   src: unknown;
