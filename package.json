@@ -1,17 +1,26 @@
 {
   "name": "react-json-visualizer",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "brunoeduardodev <brunoeduardo.dev@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@stitches/react": "^1.2.8",
-    "@types/react": "^18.0.25",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.0-alpha.53",
+    "@storybook/addon-interactions": "^7.0.0-alpha.53",
+    "@storybook/addon-links": "^7.0.0-alpha.53",
+    "@storybook/react": "^7.0.0-alpha.53",
+    "@storybook/react-webpack5": "^7.0.0-alpha.53",
+    "@storybook/testing-library": "^0.0.13",
+    "storybook": "^7.0.0-alpha.53",
+    "typescript": "^4.9.3"
+  },
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   }
 }

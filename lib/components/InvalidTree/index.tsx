@@ -11,6 +11,7 @@ const Container = styled("div", {
   minWidth: "100px",
   minHeight: "100px",
   padding: "16px",
+  background: "hsl(0, 100%, 90%, 0.5)",
 });
 
 const Text = styled("p", {
@@ -18,6 +19,7 @@ const Text = styled("p", {
   fontWeight: "bold",
   fontSize: "14px",
   textAlign: "center",
+  fontFamily: "sans-serif",
 });
 
 export const InvalidTree = () => {
