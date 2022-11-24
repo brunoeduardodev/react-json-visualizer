@@ -9,7 +9,7 @@ export const Cell = styled("span", {
         color: "$string",
       },
       number: {
-        color: "$blue500",
+        color: "$number",
       },
       boolean: {
         color: "$green500",
