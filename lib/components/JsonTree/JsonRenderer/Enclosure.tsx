@@ -1,7 +1,7 @@
 import { WidthIcon } from "@radix-ui/react-icons";
 import React, { PropsWithChildren } from "react";
 import { useState } from "react";
-import { styled } from "../../../../stitches.config";
+import { styled } from "../../../stitches.config";
 
 type Props = {
   type: "curly" | "brackets";
@@ -44,22 +44,32 @@ const ExpandIcon = styled(WidthIcon, {
 export const Container = styled("div", {
   display: "flex",
   position: "relative",
-  alignItems: "center",
+
+  variants: {
+    open: {
+      true: {
+        flexDirection: "column",
+      },
+      false: {
+        flexDirection: "row",
+      },
+    },
+  },
 });
 
-export const Enclosure = ({
-  type,
-  name,
-  children,
-}: PropsWithChildren<Props>) => {
+export const EnclosureContent = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+});
+
+export const Enclosure = ({ type, children }: PropsWithChildren<Props>) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Container>
-      {name && `${name} : `}{" "}
+    <Container open={expanded}>
       <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
       {expanded ? (
-        children
+        <EnclosureContent>{children}</EnclosureContent>
       ) : (
         <ExpandButton onClick={() => setExpanded(true)}>
           <ExpandIcon />

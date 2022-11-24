@@ -17,6 +17,9 @@ export const Cell = styled("span", {
       null: {
         color: "$null",
       },
+      key: {
+        color: "$key",
+      },
     },
   },
 });

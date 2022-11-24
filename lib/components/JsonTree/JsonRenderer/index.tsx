@@ -1,7 +1,7 @@
 import React from "react";
 import { ValidJSON } from "../../../types";
 import { TreeRenderer } from "./TreeRenderer";
-import { ValueRenderer } from "./ValueRenderer";
+import { ValueRenderer } from "./AtomRenderer/ValueRenderer";
 
 type Props = {
   data: ValidJSON;

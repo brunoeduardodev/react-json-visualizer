@@ -8,7 +8,7 @@ export default {
 
 export const Failing = () => <JsonTree src="invalid json" />;
 
-export const Passing = () => <JsonTree src='{"foo": "bar"}' />;
+export const Passing = () => <JsonTree src='{"foo": "bar", "john": 2}' />;
 
 export const PlainString = () => <JsonTree src={'"Hello World"'} />;
 export const PlainNumber = () => <JsonTree src={"30"} />;
