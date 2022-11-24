@@ -44,6 +44,8 @@ export const { styled, keyframes } = createStitches({
 
       string: "#f1fa8c",
       number: "#bd93f9",
+      boolean: "#bd93f9",
+      null: "#bd93f9",
 
       gray50: "hsl(230, 5%, 5%)",
       gray100: "hsl(230, 5%, 10%)",

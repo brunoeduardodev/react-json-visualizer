@@ -9,7 +9,7 @@ type Props = {
 export const TreeRenderer = ({ data }: Props) => {
   return (
     <pre>
-      {typeof data === "object" ? (
+      {typeof data === "object" && data !== null ? (
         JSON.stringify(data)
       ) : (
         <PrimitiveRenderer data={data} />

@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "../../../../stitches.config";
 
 export const Cell = styled("span", {
   fontSize: "$md",
@@ -12,10 +12,10 @@ export const Cell = styled("span", {
         color: "$number",
       },
       boolean: {
-        color: "$green500",
+        color: "$boolean",
       },
       null: {
-        color: "$gray500",
+        color: "$null",
       },
     },
   },
