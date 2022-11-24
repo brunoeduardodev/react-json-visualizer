@@ -1,7 +1,7 @@
 import React from "react";
 import { safeParse } from "../../utils/safeParse";
 import { Container } from "./Container";
-import { TreeRenderer } from "./TreeRenderer";
+import { JsonRenderer } from "./JsonRenderer";
 
 type Props = {
   src: unknown;
@@ -12,7 +12,7 @@ export const JsonTree = ({ src }: Props) => {
 
   return (
     <Container>
-      <TreeRenderer data={error ? "Invalid JSON" : data} />
+      <JsonRenderer data={error ? "Invalid JSON" : data} />
     </Container>
   );
 };
