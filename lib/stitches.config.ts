@@ -4,12 +4,12 @@ import { createStitches } from "@stitches/react";
 export const { styled, keyframes } = createStitches({
   theme: {
     fontSizes: {
-      xs: "10px",
-      sm: "12px",
-      md: "14px",
-      lg: "16px",
-      xl: "18px",
-      "2xl": "20px",
+      xs: "12px",
+      sm: "14px",
+      md: "16px",
+      lg: "18px",
+      xl: "20px",
+      "2xl": "24px",
     },
     size: {
       1: "4px",
@@ -40,6 +40,10 @@ export const { styled, keyframes } = createStitches({
       round: "9999px",
     },
     colors: {
+      background: "#282a36",
+
+      string: "#f1fa8c",
+
       gray50: "hsl(230, 5%, 5%)",
       gray100: "hsl(230, 5%, 10%)",
       gray200: "hsl(230, 5%, 15%)",

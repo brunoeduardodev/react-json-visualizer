@@ -9,3 +9,5 @@ export default {
 export const Failing = () => <JsonTree src="invalid json" />;
 
 export const Passing = () => <JsonTree src='{"foo": "bar"}' />;
+
+export const PrimitiveValue = () => <JsonTree src={'"Hello World"'} />;
