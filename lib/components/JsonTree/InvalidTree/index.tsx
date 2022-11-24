@@ -1,28 +1,24 @@
-import { styled } from "@stitches/react";
 import React from "react";
+import { styled } from "../../../stitches.config";
 
 const Container = styled("div", {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  width: "400px",
-  height: "400px",
-  minWidth: "100px",
-  minHeight: "100px",
+  sq: "400px",
+  minSq: "100px",
   padding: "16px",
-  background: "hsl(0, 100%, 90%, 0.5)",
+  background: "$red300",
 });
 
 const Text = styled("p", {
-  color: "red",
+  color: "$gray900",
   fontWeight: "bold",
   fontSize: "14px",
   textAlign: "center",
   fontFamily: "sans-serif",
 });
-
-type Test = string;
 
 export const InvalidTree = () => {
   return (
