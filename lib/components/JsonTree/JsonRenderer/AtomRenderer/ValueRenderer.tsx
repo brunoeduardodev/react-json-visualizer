@@ -1,5 +1,5 @@
 import React from "react";
-import { ValidJSON } from "../../../../types";
+import { Primitive, ValidJSON } from "../../../../types";
 import { BooleanRenderer } from "./BooleanRenderer";
 import { NullRenderer } from "./NullRenderer";
 import { NumberRenderer } from "./NumberRenderer";
@@ -7,12 +7,10 @@ import { ObjectRenderer } from "./ObjectRenderer";
 import { StringRenderer } from "./StingRenderer";
 
 type Props = {
-  data: ValidJSON;
-  depth: number;
-  lineOffset: number;
+  data: Primitive;
 };
 
-export const ValueRenderer = ({ data, depth, lineOffset }: Props) => {
+export const ValueRenderer = ({ data }: Props) => {
   if (typeof data === "string") {
     return <StringRenderer data={data} />;
   }
@@ -29,9 +27,5 @@ export const ValueRenderer = ({ data, depth, lineOffset }: Props) => {
     return <NullRenderer data={data} />;
   }
 
-  if (Array.isArray(data)) {
-    return null;
-  }
-
-  return <ObjectRenderer data={data} depth={depth} lineOffset={lineOffset} />;
+  return null;
 };
