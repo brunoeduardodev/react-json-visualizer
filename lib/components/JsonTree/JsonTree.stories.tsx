@@ -10,6 +10,10 @@ export const Failing = () => <JsonTree src="invalid json" />;
 
 export const Passing = () => <JsonTree src='{"foo": "bar", "john": 2}' />;
 
+export const Nested = () => (
+  <JsonTree src='{"foo": "bar", "john": 2, "nested": {"open": true}}' />
+);
+
 export const PlainString = () => <JsonTree src={'"Hello World"'} />;
 export const PlainNumber = () => <JsonTree src={"30"} />;
 export const PlainBoolean = () => <JsonTree src={"true"} />;

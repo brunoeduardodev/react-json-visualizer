@@ -13,7 +13,7 @@ export const JsonRenderer = ({ data }: Props) => {
       {typeof data === "object" && data !== null ? (
         <TreeRenderer data={data} />
       ) : (
-        <ValueRenderer data={data} />
+        <ValueRenderer depth={0} lineOffset={0} data={data} />
       )}
     </pre>
   );

@@ -1,15 +1,18 @@
 import React from "react";
-import { Primitive } from "../../../../types";
+import { ValidJSON } from "../../../../types";
 import { BooleanRenderer } from "./BooleanRenderer";
 import { NullRenderer } from "./NullRenderer";
 import { NumberRenderer } from "./NumberRenderer";
+import { ObjectRenderer } from "./ObjectRenderer";
 import { StringRenderer } from "./StingRenderer";
 
 type Props = {
-  data: Primitive;
+  data: ValidJSON;
+  depth: number;
+  lineOffset: number;
 };
 
-export const ValueRenderer = ({ data }: Props) => {
+export const ValueRenderer = ({ data, depth, lineOffset }: Props) => {
   if (typeof data === "string") {
     return <StringRenderer data={data} />;
   }
@@ -26,5 +29,9 @@ export const ValueRenderer = ({ data }: Props) => {
     return <NullRenderer data={data} />;
   }
 
-  return null;
+  if (Array.isArray(data)) {
+    return null;
+  }
+
+  return <ObjectRenderer data={data} depth={depth} lineOffset={lineOffset} />;
 };

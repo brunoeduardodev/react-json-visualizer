@@ -1,14 +1,13 @@
 import { styled } from "../../../../stitches.config";
 
 export const LineContainer = styled("div", {
-  position: "relative",
   display: "flex",
-  alignItems: "center",
 });
 
 export const GutterContainer = styled("div", {
   display: "flex",
-  position: "relative",
+  position: "absolute",
+  left: 0,
 });
 
 export const LineGutter = styled("div", {
@@ -21,4 +20,8 @@ export const LineGutter = styled("div", {
 
 export const ExpandGutter = styled("div", {
   width: "$4",
+});
+
+export const ContentContainer = styled("div", {
+  display: "flex",
 });

@@ -5,5 +5,7 @@ export const Container = styled("div", {
   fontFamily: "sans-serif",
   background: "$background",
   p: "$3",
+  pl: "$8",
   color: "$gray900",
+  position: "relative",
 });

@@ -2,13 +2,12 @@ import { WidthIcon } from "@radix-ui/react-icons";
 import React, { PropsWithChildren } from "react";
 import { useState } from "react";
 import { styled } from "../../../stitches.config";
-import { Line } from "./Line";
+import { Line, LineProps } from "./Line";
 
 type Props = {
   type: "curly" | "brackets";
   name?: string;
 
-  isRoot?: boolean;
   toLine?: number;
 };
 
@@ -47,7 +46,6 @@ const ExpandIcon = styled(WidthIcon, {
 
 export const Container = styled("div", {
   display: "flex",
-  position: "relative",
 
   variants: {
     open: {
@@ -66,38 +64,65 @@ export const EnclosureContent = styled("div", {
   flexDirection: "column",
 });
 
-export const Enclosure = ({
+export const RootEnclosure = ({
   type,
   children,
-  isRoot,
   toLine,
 }: PropsWithChildren<Props>) => {
+  return (
+    <>
+      <Line depth={0} line={1}>
+        <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
+      </Line>
+      {children}
+      <Line depth={0} line={toLine!}>
+        <EncloseCharacter>{KeysMap[type].close}</EncloseCharacter>
+      </Line>
+    </>
+  );
+};
+
+type WithEnclosureProps = {
+  enclosed: React.ReactNode;
+  children: React.ReactNode;
+  type: "curly" | "brackets";
+
+  toLine: number;
+} & LineProps;
+
+export const WithEnclosure = ({
+  children,
+  enclosed,
+  type,
+  toLine,
+  ...line
+}: WithEnclosureProps) => {
   const [expanded, setExpanded] = useState(false);
 
-  return (
-    <Container open={expanded}>
-      {isRoot ? (
-        <Line depth={0} line={1}>
+  if (!expanded)
+    return (
+      <>
+        <Line {...line}>
+          {children}
           <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
-        </Line>
-      ) : (
-        <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
-      )}
-      {expanded ? (
-        <EnclosureContent>{children}</EnclosureContent>
-      ) : (
-        <ExpandButton onClick={() => setExpanded(true)}>
-          <ExpandIcon />
-        </ExpandButton>
-      )}
-
-      {isRoot && expanded ? (
-        <Line depth={0} line={toLine!}>
+          <ExpandButton onClick={() => setExpanded((expanded) => !expanded)}>
+            <ExpandIcon />
+          </ExpandButton>
           <EncloseCharacter>{KeysMap[type].close}</EncloseCharacter>
         </Line>
-      ) : (
+      </>
+    );
+
+  return (
+    <>
+      <Line {...line}>
+        {children}
+        <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
+      </Line>
+      {enclosed}
+      <Line {...line} line={toLine}>
         <EncloseCharacter>{KeysMap[type].close}</EncloseCharacter>
-      )}
-    </Container>
+      </Line>
+    </>
   );
 };
