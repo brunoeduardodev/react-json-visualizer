@@ -62,7 +62,7 @@ const TAB_SIZE = 4;
 const SPACE_CHARACTER_SIZE = 4;
 
 export const LineRenderer = ({ depth, line, field, value, isLast }: Props) => {
-  const leftPadding = `${32 + TAB_SIZE * SPACE_CHARACTER_SIZE * depth}px`;
+  const leftPadding = `${16 + TAB_SIZE * SPACE_CHARACTER_SIZE * depth}px`;
   const [expanded, setExpanded] = useState(depth < 3);
 
   const enclosure = useMemo(() => {
@@ -76,7 +76,7 @@ export const LineRenderer = ({ depth, line, field, value, isLast }: Props) => {
     <>
       <LineContainer>
         <GutterContainer>
-          <LineGutter>{line}</LineGutter>
+          <LineGutter>{line + 1}</LineGutter>
           <ExpandGutter />
         </GutterContainer>
         <ContentContainer css={{ paddingLeft: leftPadding }}>
@@ -110,35 +110,31 @@ export const LineRenderer = ({ depth, line, field, value, isLast }: Props) => {
         </ContentContainer>
       </LineContainer>
 
-      {enclosure ? (
+      {enclosure && expanded ? (
         <>
-          {expanded ? (
-            <>
-              {getEntriesWithLines(value as object, line).map(
-                ({ key, value, fromLine, toLine }, index, entries) => (
-                  <LineRenderer
-                    depth={depth + 1}
-                    line={fromLine}
-                    value={value}
-                    field={key}
-                    key={`${depth} - ${key}`}
-                    isLast={index === entries.length - 1}
-                  />
-                )
-              )}
+          {getEntriesWithLines(value as object, line).map(
+            ({ key, value, fromLine, toLine }, index, entries) => (
+              <LineRenderer
+                depth={depth + 1}
+                line={fromLine + 1}
+                value={value}
+                field={key}
+                key={`${depth} - ${key}`}
+                isLast={index === entries.length - 1}
+              />
+            )
+          )}
 
-              <LineContainer>
-                <GutterContainer>
-                  <LineGutter>{enclosure.toLine}</LineGutter>
-                  <ExpandGutter />
-                </GutterContainer>
+          <LineContainer>
+            <GutterContainer>
+              <LineGutter>{enclosure.toLine + 1}</LineGutter>
+              <ExpandGutter />
+            </GutterContainer>
 
-                <ContentContainer css={{ pl: leftPadding }}>
-                  <EncloseCharacter>{KeysMap["curly"].close}</EncloseCharacter>
-                </ContentContainer>
-              </LineContainer>
-            </>
-          ) : null}
+            <ContentContainer css={{ pl: leftPadding }}>
+              <EncloseCharacter>{KeysMap["curly"].close}</EncloseCharacter>
+            </ContentContainer>
+          </LineContainer>
         </>
       ) : null}
     </>

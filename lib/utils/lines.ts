@@ -7,7 +7,7 @@ export const getLinesDifference = (object: ValidJSON) => {
   if (object === null) return 1;
 
   return Object.entries(object).reduce((totalLines, [key, value]) => {
-    return totalLines + getLinesDifference(value);
+    return totalLines + getLinesDifference(value) + 1;
   }, 0);
 };
 

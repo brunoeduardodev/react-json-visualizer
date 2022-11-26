@@ -12,7 +12,7 @@ export const GutterContainer = styled("div", {
 
 export const LineGutter = styled("div", {
   color: "$line",
-  width: "$5",
+  width: "$6",
   position: "relative",
 
   textAlign: "end",
