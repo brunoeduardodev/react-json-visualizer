@@ -2,10 +2,14 @@ import { WidthIcon } from "@radix-ui/react-icons";
 import React, { PropsWithChildren } from "react";
 import { useState } from "react";
 import { styled } from "../../../stitches.config";
+import { Line } from "./Line";
 
 type Props = {
   type: "curly" | "brackets";
   name?: string;
+
+  isRoot?: boolean;
+  toLine?: number;
 };
 
 const KeysMap = {
@@ -62,12 +66,23 @@ export const EnclosureContent = styled("div", {
   flexDirection: "column",
 });
 
-export const Enclosure = ({ type, children }: PropsWithChildren<Props>) => {
+export const Enclosure = ({
+  type,
+  children,
+  isRoot,
+  toLine,
+}: PropsWithChildren<Props>) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <Container open={expanded}>
-      <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
+      {isRoot ? (
+        <Line depth={0} line={1}>
+          <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
+        </Line>
+      ) : (
+        <EncloseCharacter>{KeysMap[type].open}</EncloseCharacter>
+      )}
       {expanded ? (
         <EnclosureContent>{children}</EnclosureContent>
       ) : (
@@ -75,7 +90,14 @@ export const Enclosure = ({ type, children }: PropsWithChildren<Props>) => {
           <ExpandIcon />
         </ExpandButton>
       )}
-      <EncloseCharacter>{KeysMap[type].close}</EncloseCharacter>
+
+      {isRoot && expanded ? (
+        <Line depth={0} line={toLine!}>
+          <EncloseCharacter>{KeysMap[type].close}</EncloseCharacter>
+        </Line>
+      ) : (
+        <EncloseCharacter>{KeysMap[type].close}</EncloseCharacter>
+      )}
     </Container>
   );
 };

@@ -6,5 +6,5 @@ type Props = {
 };
 
 export const TreeRenderer = ({ data }: Props) => {
-  return <ObjectRenderer depth={0} data={data} />;
+  return <ObjectRenderer lineOffset={0} depth={0} data={data} />;
 };

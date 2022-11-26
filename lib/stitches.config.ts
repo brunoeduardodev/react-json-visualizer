@@ -11,7 +11,7 @@ export const { styled, keyframes } = createStitches({
       xl: "20px",
       "2xl": "24px",
     },
-    size: {
+    sizes: {
       1: "4px",
       2: "8px",
       3: "12px",
@@ -47,6 +47,7 @@ export const { styled, keyframes } = createStitches({
       boolean: "#bd93f9",
       null: "#bd93f9",
       key: "#66d9ef",
+      line: "#6D8A88",
 
       gray50: "hsl(230, 5%, 5%)",
       gray100: "hsl(230, 5%, 10%)",
