@@ -1,6 +1,6 @@
 import { ValidJSON } from "../types";
 
-export const getLinesDifference = (object: ValidJSON) => {
+export const getLinesDifference = (object: ValidJSON): number => {
   if (["string", "number", "boolean", "undefined"].includes(typeof object))
     return 1;
 
