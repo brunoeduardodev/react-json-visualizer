@@ -67,67 +67,15 @@ const getLinesFromTree = (
     return [enclosureOpening, ...insideLines, enclosureEnd];
   }
 
-  if (entry.type === "string") {
-    const { key, type, value } = entry;
-    return [
-      {
-        line: lineOffset + 1,
-        key,
-        parent,
-        type,
-        value,
-        isVisible: true,
-        depth,
-      },
-    ];
-  }
-
-  if (entry.type === "number") {
-    const { key, type, value } = entry;
-    return [
-      {
-        line: lineOffset + 1,
-        key,
-        parent,
-        type,
-        value,
-        isVisible: true,
-        depth,
-      },
-    ];
-  }
-
-  if (entry.type === "boolean") {
-    const { key, type, value } = entry;
-    return [
-      {
-        line: lineOffset + 1,
-        key,
-        parent,
-        type,
-        value,
-        isVisible: true,
-        depth,
-      },
-    ];
-  }
-
-  if (entry.type === "null") {
-    const { key, type, value } = entry;
-    return [
-      {
-        line: lineOffset + 1,
-        key,
-        parent,
-        type,
-        value,
-        isVisible: true,
-        depth,
-      },
-    ];
-  }
-
-  return lines;
+  return [
+    {
+      ...entry,
+      line: lineOffset + 1,
+      parent,
+      depth,
+      isVisible: true,
+    },
+  ];
 };
 
 console.log(
