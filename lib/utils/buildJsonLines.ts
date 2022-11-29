@@ -26,43 +26,47 @@ const getLinesFromTree = (
   lineOffset: number,
   depth: number
 ): Line[] => {
-  const lines: Line[] = [];
-
   if ("entries" in entry) {
-    const enclosureOpening: EnclosureLine = {
+    const enclosureType = entry.type === "object" ? "curly" : "brackets";
+
+    const enclosure = {
+      enclosureType,
       expanded: true,
-      isVisible: !!parent?.isVisible,
       key: entry.key,
-      line: lineOffset + 1,
-      parent: parent,
-      enclosureType: entry.type === "object" ? "curly" : "brackets",
-      type: "opening",
       depth,
+      parent,
+
+      get isVisible() {
+        return this.parent
+          ? this.parent.isVisible && this.parent.expanded
+          : true;
+      },
+    } as const;
+
+    const enclosureOpening: EnclosureLine = {
+      ...enclosure,
+      line: lineOffset + 1,
+      type: "opening",
     };
 
-    let entryOffsetAccumulator = 0;
+    let contentLines = 0;
     const insideLines = entry.entries.flatMap((entry, index) => {
-      const newLines = getLinesFromTree(
+      const insideLines = getLinesFromTree(
         entry,
         enclosureOpening,
-        lineOffset + entryOffsetAccumulator + 1,
+        lineOffset + contentLines + 1,
         depth + 1
       );
 
-      entryOffsetAccumulator += getTotalLinesFromSchema(entry);
+      contentLines += getTotalLinesFromSchema(entry);
 
-      return newLines;
+      return insideLines;
     });
 
     const enclosureEnd: EnclosureLine = {
-      expanded: true,
-      isVisible: enclosureOpening.isVisible,
-      enclosureType: entry.type === "object" ? "curly" : "brackets",
-      key: entry.key,
-      line: lineOffset + entryOffsetAccumulator + 2,
-      parent,
+      ...enclosure,
+      line: lineOffset + contentLines + 2,
       type: "closing",
-      depth,
     };
     return [enclosureOpening, ...insideLines, enclosureEnd];
   }
@@ -73,7 +77,9 @@ const getLinesFromTree = (
       line: lineOffset + 1,
       parent,
       depth,
-      isVisible: true,
+      get isVisible() {
+        return !!this.parent?.isVisible;
+      },
     },
   ];
 };
