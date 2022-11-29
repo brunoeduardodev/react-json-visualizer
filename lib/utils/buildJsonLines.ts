@@ -1,101 +1,5 @@
-import {
-  BooleanSchema,
-  NullSchema,
-  NumberSchema,
-  StringSchema,
-  ValidJSON,
-} from "./types";
-import { getLinesDifference } from "./utils/lines";
-
-type BaseEntry = {
-  key: string | null;
-};
-
-type StringEntry = StringSchema & BaseEntry;
-
-type NumberEntry = NumberSchema & BaseEntry;
-
-type BooleanEntry = BooleanSchema & BaseEntry;
-
-type NullEntry = NullSchema & BaseEntry;
-
-type ArrayEntry = {
-  type: "array";
-  entries: ParsedEntry[];
-} & BaseEntry;
-
-type ObjectEntry = {
-  type: "object";
-  entries: ParsedEntry[];
-} & BaseEntry;
-
-type ParsedEntry =
-  | StringEntry
-  | NumberEntry
-  | BooleanEntry
-  | NullEntry
-  | ArrayEntry
-  | ObjectEntry;
-
-type Options = {
-  key: string | null;
-  value: ValidJSON;
-};
-
-export const parseJson = ({ key, value }: Options): ParsedEntry => {
-  if (typeof value === "string") {
-    return {
-      type: "string",
-      key,
-      value,
-    };
-  }
-
-  if (typeof value === "number") {
-    return {
-      type: "number",
-      key,
-      value,
-    };
-  }
-
-  if (typeof value === "boolean") {
-    return {
-      type: "boolean",
-      key,
-      value,
-    };
-  }
-
-  if (value === null) {
-    return {
-      type: "null",
-      key,
-      value,
-    };
-  }
-
-  if (Array.isArray(value)) {
-    return {
-      type: "array",
-      key,
-      entries: value,
-    };
-  }
-
-  const parsed: ObjectEntry = {
-    type: "object",
-    key,
-    entries: Object.entries(value).map(([key, value], index) => {
-      return parseJson({
-        key,
-        value,
-      });
-    }),
-  };
-
-  return parsed;
-};
+import { ValueSchema } from "../types";
+import { getTotalLinesFromSchema, getValueSchema } from "./getValueSchema";
 
 type BaseLine = {
   line: number;
@@ -106,8 +10,7 @@ type BaseLine = {
   parent: EnclosureLine | null;
 };
 
-type ValueLine = (StringSchema | NumberSchema | NullSchema | BooleanSchema) &
-  BaseLine;
+type SimpleLine = ValueSchema & BaseLine;
 
 type EnclosureLine = {
   enclosureType: "curly" | "brackets";
@@ -115,32 +18,15 @@ type EnclosureLine = {
   type: "opening" | "closing";
 } & BaseLine;
 
-type ParsedLine = ValueLine | EnclosureLine;
-
-const getEntryLines = (entryData: ParsedEntry | ParsedEntry[]): number => {
-  if (Array.isArray(entryData)) {
-    return (
-      1 +
-      entryData.reduce((total, entry) => {
-        return getEntryLines(entry) + total;
-      }, 0)
-    );
-  }
-
-  if ("entries" in entryData) {
-    return 1 + getEntryLines(entryData.entries);
-  }
-
-  return 1;
-};
+type Line = SimpleLine | EnclosureLine;
 
 const getLinesFromTree = (
-  entry: ParsedEntry,
+  entry: ValueSchema,
   parent: EnclosureLine | null,
   lineOffset: number,
   depth: number
-): ParsedLine[] => {
-  const lines: ParsedLine[] = [];
+): Line[] => {
+  const lines: Line[] = [];
 
   if ("entries" in entry) {
     const enclosureOpening: EnclosureLine = {
@@ -163,7 +49,7 @@ const getLinesFromTree = (
         depth + 1
       );
 
-      entryOffsetAccumulator += getEntryLines(entry);
+      entryOffsetAccumulator += getTotalLinesFromSchema(entry);
 
       return newLines;
     });
@@ -246,7 +132,7 @@ const getLinesFromTree = (
 
 console.log(
   getLinesFromTree(
-    parseJson({
+    getValueSchema({
       key: null,
       value: JSON.parse(
         JSON.stringify({
