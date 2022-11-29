@@ -10,9 +10,7 @@ export const Failing = () => <JsonTree src="invalid json" />;
 
 export const Passing = () => <JsonTree src='{"foo": "bar", "john": 2}' />;
 
-export const Nested = () => (
-  <JsonTree src='{"foo": "bar", "john": 2, "nested": {"open": true}}' />
-);
+export const Nested = () => <JsonTree src='{"foo": "bar", "john": 2, "nested": {"open": true}}' />;
 
 export const DeepNested = () => (
   <JsonTree

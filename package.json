@@ -7,7 +7,7 @@
   "scripts": {
     "sb": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "lint": "eslint lib/**/*.{ts,tsx} --fix"
+    "lint": "eslint --fix lib/**/*.{ts,tsx}"
   },
   "dependencies": {
     "@radix-ui/react-icons": "^1.1.1",

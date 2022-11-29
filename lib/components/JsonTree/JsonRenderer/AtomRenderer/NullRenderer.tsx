@@ -1,10 +1,6 @@
 import React from "react";
 import { Cell } from "./styles";
 
-type Props = {
-  data: null;
-};
-
-export const NullRenderer = ({ data }: Props) => {
+export const NullRenderer = () => {
   return <Cell type="null">null</Cell>;
 };

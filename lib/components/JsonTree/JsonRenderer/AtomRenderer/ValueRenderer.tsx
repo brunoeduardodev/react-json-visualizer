@@ -1,9 +1,8 @@
 import React from "react";
-import { Primitive, ValidJSON } from "../../../../types";
+import { Primitive } from "../../../../types";
 import { BooleanRenderer } from "./BooleanRenderer";
 import { NullRenderer } from "./NullRenderer";
 import { NumberRenderer } from "./NumberRenderer";
-import { ObjectRenderer } from "./ObjectRenderer";
 import { StringRenderer } from "./StingRenderer";
 
 type Props = {
@@ -24,7 +23,7 @@ export const ValueRenderer = ({ data }: Props) => {
   }
 
   if (data === null) {
-    return <NullRenderer data={data} />;
+    return <NullRenderer />;
   }
 
   return null;

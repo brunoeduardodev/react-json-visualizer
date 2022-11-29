@@ -6,5 +6,5 @@ type Props = {
 };
 
 export const KeyRenderer = ({ data }: Props) => {
-  return <Cell type="key">"{data}"</Cell>;
+  return <Cell type="key">{`"${data}"`}</Cell>;
 };

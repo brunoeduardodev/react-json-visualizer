@@ -36,9 +36,7 @@ export const generateSchema = ({ key, value }: Options): ValueSchema => {
 
 type MaybeArray<T> = T | T[];
 
-export const getTotalLinesFromSchema = (
-  value: MaybeArray<ValueSchema>
-): number => {
+export const getTotalLinesFromSchema = (value: MaybeArray<ValueSchema>): number => {
   if (Array.isArray(value)) {
     return value.reduce((total, entry) => {
       return getTotalLinesFromSchema(entry) + total;

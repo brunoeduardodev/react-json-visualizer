@@ -64,11 +64,7 @@ export const EnclosureContent = styled("div", {
   flexDirection: "column",
 });
 
-export const RootEnclosure = ({
-  type,
-  children,
-  toLine,
-}: PropsWithChildren<Props>) => {
+export const RootEnclosure = ({ type, children, toLine }: PropsWithChildren<Props>) => {
   return (
     <>
       <Line depth={0} line={1}>
@@ -90,13 +86,7 @@ type WithEnclosureProps = {
   toLine: number;
 } & LineProps;
 
-export const WithEnclosure = ({
-  children,
-  enclosed,
-  type,
-  toLine,
-  ...line
-}: WithEnclosureProps) => {
+export const WithEnclosure = ({ children, enclosed, type, toLine, ...line }: WithEnclosureProps) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!expanded)

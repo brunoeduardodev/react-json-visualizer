@@ -1,8 +1,7 @@
 import { ValidJSON } from "../types";
 
 export const getLinesDifference = (object: ValidJSON): number => {
-  if (["string", "number", "boolean", "undefined"].includes(typeof object))
-    return 1;
+  if (["string", "number", "boolean", "undefined"].includes(typeof object)) return 1;
 
   if (object === null) return 1;
 

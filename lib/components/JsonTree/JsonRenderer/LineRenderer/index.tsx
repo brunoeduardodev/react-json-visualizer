@@ -2,19 +2,10 @@ import { WidthIcon } from "@radix-ui/react-icons";
 import React, { useMemo, useState } from "react";
 import { styled } from "../../../../stitches.config";
 import { Primitive, ValidJSON } from "../../../../types";
-import {
-  getEntriesWithLines,
-  getLinesDifference,
-} from "../../../../utils/lines";
+import { getEntriesWithLines, getLinesDifference } from "../../../../utils/lines";
 import { KeyRenderer } from "../AtomRenderer/KeyRenderer";
 import { ValueRenderer } from "../AtomRenderer/ValueRenderer";
-import {
-  ContentContainer,
-  ExpandGutter,
-  GutterContainer,
-  LineContainer,
-  LineGutter,
-} from "./styles";
+import { ContentContainer, ExpandGutter, GutterContainer, LineContainer, LineGutter } from "./styles";
 
 type Props = {
   depth: number;
@@ -112,18 +103,16 @@ export const LineRenderer = ({ depth, line, field, value, isLast }: Props) => {
 
       {enclosure && expanded ? (
         <>
-          {getEntriesWithLines(value as object, line).map(
-            ({ key, value, fromLine, toLine }, index, entries) => (
-              <LineRenderer
-                depth={depth + 1}
-                line={fromLine + 1}
-                value={value}
-                field={key}
-                key={`${depth} - ${key}`}
-                isLast={index === entries.length - 1}
-              />
-            )
-          )}
+          {getEntriesWithLines(value as object, line).map(({ key, value, fromLine, toLine }, index, entries) => (
+            <LineRenderer
+              depth={depth + 1}
+              line={fromLine + 1}
+              value={value}
+              field={key}
+              key={`${depth} - ${key}`}
+              isLast={index === entries.length - 1}
+            />
+          ))}
 
           <LineContainer>
             <GutterContainer>

@@ -20,12 +20,7 @@ type EnclosureLine = {
 
 type Line = SimpleLine | EnclosureLine;
 
-const generateLines = (
-  entry: ValueSchema,
-  parent: EnclosureLine | null,
-  lineOffset: number,
-  depth: number
-): Line[] => {
+const generateLines = (entry: ValueSchema, parent: EnclosureLine | null, lineOffset: number, depth: number): Line[] => {
   if ("entries" in entry) {
     const enclosureType = entry.type === "object" ? "curly" : "brackets";
 
@@ -37,9 +32,7 @@ const generateLines = (
       parent,
 
       get isVisible() {
-        return this.parent
-          ? this.parent.isVisible && this.parent.expanded
-          : true;
+        return this.parent ? this.parent.isVisible && this.parent.expanded : true;
       },
     } as const;
 
@@ -51,12 +44,7 @@ const generateLines = (
 
     let contentLines = 0;
     const insideLines = entry.entries.flatMap((entry, index) => {
-      const insideLines = generateLines(
-        entry,
-        enclosureOpening,
-        lineOffset + contentLines + 1,
-        depth + 1
-      );
+      const insideLines = generateLines(entry, enclosureOpening, lineOffset + contentLines + 1, depth + 1);
 
       contentLines += getTotalLinesFromSchema(entry);
 

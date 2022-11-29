@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Primitive, ValidJSON } from "../../../../types";
+import React, from "react";
+import {  ValidJSON } from "../../../../types";
 import { getEntriesWithLines } from "../../../../utils";
 import { Line } from "../Line";
 import { KeyRenderer } from "./KeyRenderer";
@@ -22,14 +22,7 @@ type EntryProps = {
   isLast: boolean;
 };
 
-const EntryRenderer = ({
-  entryKey,
-  value,
-  depth,
-  isLast,
-  line,
-  toLine,
-}: EntryProps) => {
+const EntryRenderer = ({ entryKey, value, depth, isLast, line, toLine }: EntryProps) => {
   if (typeof value === "object" && value !== null) {
     return (
       <WithEnclosure
@@ -37,9 +30,7 @@ const EntryRenderer = ({
         line={line}
         toLine={toLine}
         type="curly"
-        enclosed={
-          <ObjectRenderer depth={depth + 1} data={value} lineOffset={line} />
-        }
+        enclosed={<ObjectRenderer depth={depth + 1} data={value} lineOffset={line} />}
       >
         <KeyRenderer data={entryKey} />:{" "}
       </WithEnclosure>
@@ -48,8 +39,7 @@ const EntryRenderer = ({
 
   return (
     <Line depth={depth} line={line}>
-      <KeyRenderer data={entryKey} />:{" "}
-      <ValueRenderer depth={depth} lineOffset={line} data={value} />
+      <KeyRenderer data={entryKey} />: <ValueRenderer data={value} />
       {isLast ? "" : ","}
     </Line>
   );
