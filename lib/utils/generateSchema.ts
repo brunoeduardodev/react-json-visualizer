@@ -5,31 +5,7 @@ type Options = {
   value: ValidJSON;
 };
 
-export const getValueSchema = ({ key, value }: Options): ValueSchema => {
-  if (typeof value === "string") {
-    return {
-      type: "string",
-      key,
-      value,
-    };
-  }
-
-  if (typeof value === "number") {
-    return {
-      type: "number",
-      key,
-      value,
-    };
-  }
-
-  if (typeof value === "boolean") {
-    return {
-      type: "boolean",
-      key,
-      value,
-    };
-  }
-
+export const generateSchema = ({ key, value }: Options): ValueSchema => {
   if (value === null) {
     return {
       type: "null",
@@ -38,26 +14,24 @@ export const getValueSchema = ({ key, value }: Options): ValueSchema => {
     };
   }
 
-  if (Array.isArray(value)) {
+  if (typeof value === "object") {
     return {
-      type: "array",
+      type: Array.isArray(value) ? "array" : "object",
       key,
       entries: Object.entries(value).map(([key, value]) => {
-        return getValueSchema({ key, value });
+        return generateSchema({
+          key,
+          value,
+        });
       }),
     };
   }
 
   return {
-    type: "object",
+    type: typeof value,
     key,
-    entries: Object.entries(value).map(([key, value], index) => {
-      return getValueSchema({
-        key,
-        value,
-      });
-    }),
-  };
+    value,
+  } as ValueSchema; // TODO: Remove this type assertion
 };
 
 type MaybeArray<T> = T | T[];

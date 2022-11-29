@@ -1,5 +1,5 @@
 import { ValueSchema } from "../types";
-import { getTotalLinesFromSchema, getValueSchema } from "./getValueSchema";
+import { getTotalLinesFromSchema, generateSchema } from "./generateSchema";
 
 type BaseLine = {
   line: number;
@@ -20,7 +20,7 @@ type EnclosureLine = {
 
 type Line = SimpleLine | EnclosureLine;
 
-const getLinesFromTree = (
+const generateLines = (
   entry: ValueSchema,
   parent: EnclosureLine | null,
   lineOffset: number,
@@ -51,7 +51,7 @@ const getLinesFromTree = (
 
     let contentLines = 0;
     const insideLines = entry.entries.flatMap((entry, index) => {
-      const insideLines = getLinesFromTree(
+      const insideLines = generateLines(
         entry,
         enclosureOpening,
         lineOffset + contentLines + 1,
@@ -85,8 +85,8 @@ const getLinesFromTree = (
 };
 
 console.log(
-  getLinesFromTree(
-    getValueSchema({
+  generateLines(
+    generateSchema({
       key: null,
       value: JSON.parse(
         JSON.stringify({
