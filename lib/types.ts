@@ -39,10 +39,4 @@ type ObjectEntry = {
   entries: ValueSchema[];
 };
 
-export type ValueSchema =
-  | StringSchema
-  | NumberSchema
-  | BooleanSchema
-  | NullSchema
-  | ArraySchema
-  | ObjectEntry;
+export type ValueSchema = StringSchema | NumberSchema | BooleanSchema | NullSchema | ArraySchema | ObjectEntry;
