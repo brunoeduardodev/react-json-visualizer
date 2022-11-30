@@ -21,9 +21,11 @@ type LineSkeletonProps = {
   line: number;
   depth: number;
   children: React.ReactNode;
+
+  showComma: boolean;
 };
 
-export const LineSkeleton = ({ property, line, depth, children }: LineSkeletonProps) => {
+export const LineSkeleton = ({ property, line, depth, children, showComma }: LineSkeletonProps) => {
   return (
     <LineContainer>
       <GutterContainer>
@@ -46,6 +48,8 @@ export const LineSkeleton = ({ property, line, depth, children }: LineSkeletonPr
       )}
 
       {children}
+
+      {showComma && <span>,</span>}
     </LineContainer>
   );
 };
@@ -53,18 +57,18 @@ export const LineSkeleton = ({ property, line, depth, children }: LineSkeletonPr
 export const LineRenderer = ({ line }: Props) => {
   if (!line.isVisible) return null;
   if (!line.isEnclosure) {
-    const { depth, line: lineNumber, key, value } = line;
+    const { depth, line: lineNumber, key, value, hasNext } = line;
     return (
-      <LineSkeleton line={lineNumber} depth={depth} property={key}>
+      <LineSkeleton line={lineNumber} depth={depth} property={key} showComma={hasNext}>
         <ValueRenderer data={value} />
       </LineSkeleton>
     );
   }
 
-  const { depth, enclosureType, expanded, key, type, line: lineNumber } = line;
+  const { depth, enclosureType, expanded, key, type, line: lineNumber, hasNext } = line;
   if (type === "closing") {
     return (
-      <LineSkeleton depth={depth} line={lineNumber} property={null}>
+      <LineSkeleton depth={depth} line={lineNumber} property={null} showComma={hasNext}>
         <EnclosureCharacter>
           {enclosureType === "curly" && "}"}
           {enclosureType === "brackets" && "]"}
@@ -75,7 +79,7 @@ export const LineRenderer = ({ line }: Props) => {
 
   if (!expanded) {
     return (
-      <LineSkeleton property={key} line={lineNumber} depth={depth}>
+      <LineSkeleton property={key} line={lineNumber} depth={depth} showComma={hasNext}>
         <EnclosureCharacter>
           {enclosureType === "curly" && "{"}
           {enclosureType === "brackets" && "["}
@@ -94,7 +98,7 @@ export const LineRenderer = ({ line }: Props) => {
   }
 
   return (
-    <LineSkeleton depth={depth} line={lineNumber} property={key}>
+    <LineSkeleton depth={depth} line={lineNumber} property={key} showComma={false}>
       <EnclosureCharacter>
         {enclosureType === "curly" && "{"}
         {enclosureType === "brackets" && "["}

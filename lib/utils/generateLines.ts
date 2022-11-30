@@ -8,6 +8,7 @@ type BaseLine = {
   depth: number;
 
   parent: EnclosureLine | null;
+  hasNext: boolean;
 };
 
 type SimpleLine = PrimitiveSchemas & BaseLine & { isEnclosure: false };
@@ -17,6 +18,8 @@ type EnclosureLine = {
   expanded: boolean;
   type: "opening" | "closing";
   isEnclosure: true;
+
+  totalChildren: number;
 } & BaseLine;
 
 export type Line = SimpleLine | EnclosureLine;
@@ -24,8 +27,9 @@ export type Line = SimpleLine | EnclosureLine;
 export const generateLines = (
   entry: ValueSchema,
   parent: EnclosureLine | null,
-  lineOffset: number,
-  depth: number
+  lineOffset = 0,
+  depth = 0,
+  keyIndex = 0
 ): Line[] => {
   if ("entries" in entry) {
     const enclosureType = entry.type === "object" ? "curly" : "brackets";
@@ -37,9 +41,15 @@ export const generateLines = (
       depth,
       parent,
       isEnclosure: true,
+      totalChildren: entry.entries.length,
 
       get isVisible() {
         return this.parent ? this.parent.isVisible && this.parent.expanded : true;
+      },
+
+      get hasNext() {
+        if (!this.parent) return false;
+        return this.parent.totalChildren > keyIndex + 1;
       },
     } as const;
 
@@ -51,7 +61,7 @@ export const generateLines = (
 
     let contentLines = 0;
     const insideLines = entry.entries.flatMap((entry, index) => {
-      const insideLines = generateLines(entry, enclosureOpening, lineOffset + contentLines + 1, depth + 1);
+      const insideLines = generateLines(entry, enclosureOpening, lineOffset + contentLines + 1, depth + 1, index);
 
       contentLines += getTotalLinesFromSchema(entry);
 
@@ -76,34 +86,10 @@ export const generateLines = (
       get isVisible() {
         return !!this.parent?.isVisible;
       },
+      get hasNext() {
+        if (!this.parent) return false;
+        return this.parent.totalChildren > keyIndex + 1;
+      },
     },
   ];
 };
-
-console.log(
-  generateLines(
-    generateSchema({
-      key: null,
-      value: JSON.parse(
-        JSON.stringify({
-          john: "doe",
-          nested: {
-            isNested: true,
-            level: 1,
-            deepNested: {
-              isDeepTested: true,
-              level: 2,
-              oneMore: {
-                isThreeTimesNested: true,
-                level: 4,
-              },
-            },
-          },
-        })
-      ),
-    }),
-    null,
-    0,
-    0
-  )
-);
