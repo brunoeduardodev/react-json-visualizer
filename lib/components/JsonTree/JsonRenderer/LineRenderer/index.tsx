@@ -16,82 +16,66 @@ type Props = {
   line: Line;
 };
 
+type LineSkeletonProps = {
+  property: string | null;
+  line: number;
+  depth: number;
+  children: React.ReactNode;
+};
+
+export const LineSkeleton = ({ property, line, depth, children }: LineSkeletonProps) => {
+  return (
+    <LineContainer>
+      <GutterContainer>
+        <LineNumber>{line}</LineNumber>
+      </GutterContainer>
+
+      <DepthSpacer>
+        {Array(depth)
+          .fill(" ")
+          .map((_, i) => (
+            <span key={i}>&nbsp;</span>
+          ))}
+      </DepthSpacer>
+
+      {property && (
+        <>
+          <KeyRenderer data={property} />
+          {": "}
+        </>
+      )}
+
+      {children}
+    </LineContainer>
+  );
+};
+
 export const LineRenderer = ({ line }: Props) => {
   if (!line.isVisible) return null;
   if (!line.isEnclosure) {
     const { depth, line: lineNumber, key, value } = line;
     return (
-      <LineContainer>
-        <GutterContainer>
-          <LineNumber>{lineNumber}</LineNumber>
-        </GutterContainer>
-
-        <DepthSpacer>
-          {Array(depth)
-            .fill(" ")
-            .map((_, i) => (
-              <span key={i}>&nbsp;</span>
-            ))}
-        </DepthSpacer>
-
-        {key && (
-          <>
-            <KeyRenderer data={key} />
-            {": "}
-          </>
-        )}
-
+      <LineSkeleton line={lineNumber} depth={depth} property={key}>
         <ValueRenderer data={value} />
-      </LineContainer>
+      </LineSkeleton>
     );
   }
 
   const { depth, enclosureType, expanded, key, type, line: lineNumber } = line;
   if (type === "closing") {
     return (
-      <LineContainer>
-        <GutterContainer>
-          <LineNumber>{lineNumber}</LineNumber>
-        </GutterContainer>
-
-        <DepthSpacer>
-          {Array(depth)
-            .fill(" ")
-            .map((_, i) => (
-              <span key={i}>&nbsp;</span>
-            ))}
-        </DepthSpacer>
-
+      <LineSkeleton depth={depth} line={lineNumber} property={null}>
         <EnclosureCharacter>
           {enclosureType === "curly" && "}"}
           {enclosureType === "brackets" && "]"}
         </EnclosureCharacter>
-      </LineContainer>
+      </LineSkeleton>
     );
   }
 
   if (!expanded) {
     return (
-      <LineContainer>
-        <GutterContainer>
-          <LineNumber>{lineNumber}</LineNumber>
-        </GutterContainer>
-
-        <DepthSpacer>
-          {Array(depth)
-            .fill(" ")
-            .map((_, i) => (
-              <span key={i}>&nbsp;</span>
-            ))}
-        </DepthSpacer>
-
-        {key && (
-          <>
-            <KeyRenderer data={key} />
-            {": "}
-          </>
-        )}
-
+      <LineSkeleton property={key} line={lineNumber} depth={depth}>
         <EnclosureCharacter>
           {enclosureType === "curly" && "{"}
           {enclosureType === "brackets" && "["}
@@ -105,35 +89,16 @@ export const LineRenderer = ({ line }: Props) => {
           {enclosureType === "curly" && "}"}
           {enclosureType === "brackets" && "]"}
         </EnclosureCharacter>
-      </LineContainer>
+      </LineSkeleton>
     );
   }
 
   return (
-    <LineContainer>
-      <GutterContainer>
-        <LineNumber>{lineNumber}</LineNumber>
-      </GutterContainer>
-
-      <DepthSpacer>
-        {Array(depth)
-          .fill(" ")
-          .map((_, i) => (
-            <span key={i}>&nbsp;</span>
-          ))}
-      </DepthSpacer>
-
-      {key && (
-        <>
-          <KeyRenderer data={key} />
-          {": "}
-        </>
-      )}
-
+    <LineSkeleton depth={depth} line={lineNumber} property={key}>
       <EnclosureCharacter>
         {enclosureType === "curly" && "{"}
         {enclosureType === "brackets" && "["}
       </EnclosureCharacter>
-    </LineContainer>
+    </LineSkeleton>
   );
 };
