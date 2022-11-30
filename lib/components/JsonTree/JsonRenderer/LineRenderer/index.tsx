@@ -1,131 +1,139 @@
-import { WidthIcon } from "@radix-ui/react-icons";
-import React, { useMemo, useState } from "react";
-import { styled } from "../../../../stitches.config";
-import { Primitive, ValidJSON } from "../../../../types";
-import { getEntriesWithLines, getLinesDifference } from "../../../../utils/lines";
+import React from "react";
+import { Line } from "../../../../utils/generateLines";
 import { KeyRenderer } from "../AtomRenderer/KeyRenderer";
 import { ValueRenderer } from "../AtomRenderer/ValueRenderer";
-import { ContentContainer, ExpandGutter, GutterContainer, LineContainer, LineGutter } from "./styles";
+import {
+  DepthSpacer,
+  EnclosureCharacter,
+  ExpandButton,
+  ExpandIcon,
+  GutterContainer,
+  LineContainer,
+  LineNumber,
+} from "./styles";
 
 type Props = {
-  depth: number;
-  line: number;
-
-  field?: string;
-  value: ValidJSON;
-  isLast: boolean;
+  line: Line;
 };
 
-const KeysMap = {
-  curly: {
-    open: "{",
-    close: "}",
-  },
-  brackets: {
-    open: "[",
-    close: "]",
-  },
-};
-
-const EncloseCharacter = styled("span", {
-  color: "$gray800",
-  fontWeight: "bold",
-});
-
-const ExpandButton = styled("button", {
-  background: "transparent",
-  border: "none",
-  p: "1px",
-  borderRadius: "$round",
-  cursor: "pointer",
-
-  "&:hover, &:focus": {
-    background: "$gray100",
-  },
-});
-
-const ExpandIcon = styled(WidthIcon, {
-  color: "$blue500",
-  fontSize: "$sm",
-});
-
-const TAB_SIZE = 4;
-const SPACE_CHARACTER_SIZE = 4;
-
-export const LineRenderer = ({ depth, line, field, value, isLast }: Props) => {
-  const leftPadding = `${16 + TAB_SIZE * SPACE_CHARACTER_SIZE * depth}px`;
-  const [expanded, setExpanded] = useState(depth < 3);
-
-  const enclosure = useMemo(() => {
-    if (typeof value !== "object" || value === null) return undefined;
-
-    const toLine = getLinesDifference(value) + line;
-    return { value, toLine };
-  }, [value, line]);
-
-  return (
-    <>
+export const LineRenderer = ({ line }: Props) => {
+  if (!line.isVisible) return null;
+  if (!line.isEnclosure) {
+    const { depth, line: lineNumber, key, value } = line;
+    return (
       <LineContainer>
         <GutterContainer>
-          <LineGutter>{line + 1}</LineGutter>
-          <ExpandGutter />
+          <LineNumber>{lineNumber}</LineNumber>
         </GutterContainer>
-        <ContentContainer css={{ paddingLeft: leftPadding }}>
-          {field ? (
-            <>
-              <KeyRenderer data={field} />:{" "}
-            </>
-          ) : null}
 
-          {enclosure ? (
-            <>
-              {expanded ? (
-                <EncloseCharacter>{KeysMap["curly"].open}</EncloseCharacter>
-              ) : (
-                <>
-                  <EncloseCharacter>{KeysMap["curly"].open}</EncloseCharacter>
-                  <ExpandButton onClick={() => setExpanded(true)}>
-                    <ExpandIcon />
-                  </ExpandButton>
-                  <EncloseCharacter>{KeysMap["curly"].close}</EncloseCharacter>
-                  {isLast ? "" : ","}
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <ValueRenderer data={value as Primitive} />
-              {isLast ? "" : ","}
-            </>
-          )}
-        </ContentContainer>
+        <DepthSpacer>
+          {Array(depth)
+            .fill(" ")
+            .map((_, i) => (
+              <span key={i}>&nbsp;</span>
+            ))}
+        </DepthSpacer>
+
+        {key && (
+          <>
+            <KeyRenderer data={key} />
+            {": "}
+          </>
+        )}
+
+        <ValueRenderer data={value} />
       </LineContainer>
+    );
+  }
 
-      {enclosure && expanded ? (
-        <>
-          {getEntriesWithLines(value as object, line).map(({ key, value, fromLine, toLine }, index, entries) => (
-            <LineRenderer
-              depth={depth + 1}
-              line={fromLine + 1}
-              value={value}
-              field={key}
-              key={`${depth} - ${key}`}
-              isLast={index === entries.length - 1}
-            />
+  const { depth, enclosureType, expanded, key, type, line: lineNumber } = line;
+  if (type === "closing") {
+    return (
+      <LineContainer>
+        <GutterContainer>
+          <LineNumber>{lineNumber}</LineNumber>
+        </GutterContainer>
+
+        <DepthSpacer>
+          {Array(depth)
+            .fill(" ")
+            .map((_, i) => (
+              <span key={i}>&nbsp;</span>
+            ))}
+        </DepthSpacer>
+
+        <EnclosureCharacter>
+          {enclosureType === "curly" && "}"}
+          {enclosureType === "brackets" && "]"}
+        </EnclosureCharacter>
+      </LineContainer>
+    );
+  }
+
+  if (!expanded) {
+    return (
+      <LineContainer>
+        <GutterContainer>
+          <LineNumber>{lineNumber}</LineNumber>
+        </GutterContainer>
+
+        <DepthSpacer>
+          {Array(depth)
+            .fill(" ")
+            .map((_, i) => (
+              <span key={i}>&nbsp;</span>
+            ))}
+        </DepthSpacer>
+
+        {key && (
+          <>
+            <KeyRenderer data={key} />
+            {": "}
+          </>
+        )}
+
+        <EnclosureCharacter>
+          {enclosureType === "curly" && "{"}
+          {enclosureType === "brackets" && "["}
+        </EnclosureCharacter>
+
+        <ExpandButton>
+          <ExpandIcon />
+        </ExpandButton>
+
+        <EnclosureCharacter>
+          {enclosureType === "curly" && "}"}
+          {enclosureType === "brackets" && "]"}
+        </EnclosureCharacter>
+      </LineContainer>
+    );
+  }
+
+  return (
+    <LineContainer>
+      <GutterContainer>
+        <LineNumber>{lineNumber}</LineNumber>
+      </GutterContainer>
+
+      <DepthSpacer>
+        {Array(depth)
+          .fill(" ")
+          .map((_, i) => (
+            <span key={i}>&nbsp;</span>
           ))}
+      </DepthSpacer>
 
-          <LineContainer>
-            <GutterContainer>
-              <LineGutter>{enclosure.toLine + 1}</LineGutter>
-              <ExpandGutter />
-            </GutterContainer>
-
-            <ContentContainer css={{ pl: leftPadding }}>
-              <EncloseCharacter>{KeysMap["curly"].close}</EncloseCharacter>
-            </ContentContainer>
-          </LineContainer>
+      {key && (
+        <>
+          <KeyRenderer data={key} />
+          {": "}
         </>
-      ) : null}
-    </>
+      )}
+
+      <EnclosureCharacter>
+        {enclosureType === "curly" && "{"}
+        {enclosureType === "brackets" && "["}
+      </EnclosureCharacter>
+    </LineContainer>
   );
 };

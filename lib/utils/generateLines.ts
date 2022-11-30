@@ -1,4 +1,4 @@
-import { ValueSchema } from "../types";
+import { PrimitiveSchemas, ValueSchema } from "../types";
 import { getTotalLinesFromSchema, generateSchema } from "./generateSchema";
 
 type BaseLine = {
@@ -10,17 +10,23 @@ type BaseLine = {
   parent: EnclosureLine | null;
 };
 
-type SimpleLine = ValueSchema & BaseLine;
+type SimpleLine = PrimitiveSchemas & BaseLine & { isEnclosure: false };
 
 type EnclosureLine = {
   enclosureType: "curly" | "brackets";
   expanded: boolean;
   type: "opening" | "closing";
+  isEnclosure: true;
 } & BaseLine;
 
-type Line = SimpleLine | EnclosureLine;
+export type Line = SimpleLine | EnclosureLine;
 
-const generateLines = (entry: ValueSchema, parent: EnclosureLine | null, lineOffset: number, depth: number): Line[] => {
+export const generateLines = (
+  entry: ValueSchema,
+  parent: EnclosureLine | null,
+  lineOffset: number,
+  depth: number
+): Line[] => {
   if ("entries" in entry) {
     const enclosureType = entry.type === "object" ? "curly" : "brackets";
 
@@ -30,6 +36,7 @@ const generateLines = (entry: ValueSchema, parent: EnclosureLine | null, lineOff
       key: entry.key,
       depth,
       parent,
+      isEnclosure: true,
 
       get isVisible() {
         return this.parent ? this.parent.isVisible && this.parent.expanded : true;
@@ -65,6 +72,7 @@ const generateLines = (entry: ValueSchema, parent: EnclosureLine | null, lineOff
       line: lineOffset + 1,
       parent,
       depth,
+      isEnclosure: false,
       get isVisible() {
         return !!this.parent?.isVisible;
       },

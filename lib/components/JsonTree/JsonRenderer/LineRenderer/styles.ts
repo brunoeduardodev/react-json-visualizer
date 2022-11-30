@@ -1,27 +1,45 @@
+import { WidthIcon } from "@radix-ui/react-icons";
 import { styled } from "../../../../stitches.config";
 
 export const LineContainer = styled("div", {
   display: "flex",
+  alignItems: "center",
 });
 
 export const GutterContainer = styled("div", {
   display: "flex",
-  position: "absolute",
-  left: 0,
+
+  width: "$8",
 });
 
-export const LineGutter = styled("div", {
-  color: "$line",
+export const LineNumber = styled("span", {
+  color: "$gray700",
+  fontSize: "$sm",
   width: "$6",
-  position: "relative",
-
-  textAlign: "end",
+  textAlign: "right",
 });
 
-export const ExpandGutter = styled("div", {
-  width: "$4",
+export const DepthSpacer = styled("span", {});
+
+export const EnclosureCharacter = styled("span", {
+  color: "$gray900",
+  fontSize: "$md",
+  fontWeight: "bold",
 });
 
-export const ContentContainer = styled("div", {
-  display: "flex",
+export const ExpandButton = styled("button", {
+  background: "transparent",
+  border: "none",
+  p: "1px",
+  borderRadius: "$round",
+  cursor: "pointer",
+
+  "&:hover, &:focus": {
+    background: "$gray100",
+  },
+});
+
+export const ExpandIcon = styled(WidthIcon, {
+  color: "$blue500",
+  fontSize: "$sm",
 });
