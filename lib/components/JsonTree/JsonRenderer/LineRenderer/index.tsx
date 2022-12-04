@@ -36,7 +36,7 @@ export const LineSkeleton = ({ property, line, depth, children, showComma }: Lin
         {Array(depth)
           .fill(" ")
           .map((_, i) => (
-            <span key={i}>&nbsp;</span>
+            <span key={i}>&nbsp;&nbsp;</span>
           ))}
       </DepthSpacer>
 
