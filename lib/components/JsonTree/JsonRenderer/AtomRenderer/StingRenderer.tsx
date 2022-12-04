@@ -6,5 +6,5 @@ type Props = {
 };
 
 export const StringRenderer = ({ data }: Props) => {
-  return <Cell type="string">"{data}"</Cell>;
+  return <Cell type="string">&quot;{data}&quot;</Cell>;
 };
