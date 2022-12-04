@@ -12,10 +12,6 @@ import {
   LineNumber,
 } from "./styles";
 
-type Props = {
-  line: Line;
-};
-
 type LineSkeletonProps = {
   property: string | null;
   line: number;
@@ -54,7 +50,12 @@ export const LineSkeleton = ({ property, line, depth, children, showComma }: Lin
   );
 };
 
-export const LineRenderer = ({ line }: Props) => {
+type Props = {
+  line: Line;
+  onExpand?: (line: Line) => void;
+};
+
+export const LineRenderer = ({ line, onExpand }: Props) => {
   if (!line.isVisible) return null;
   if (!line.isEnclosure) {
     const { depth, line: lineNumber, key, value, hasNext } = line;
@@ -85,7 +86,7 @@ export const LineRenderer = ({ line }: Props) => {
           {enclosureType === "brackets" && "["}
         </EnclosureCharacter>
 
-        <ExpandButton>
+        <ExpandButton onClick={() => onExpand && onExpand(line)}>
           <ExpandIcon />
         </ExpandButton>
 

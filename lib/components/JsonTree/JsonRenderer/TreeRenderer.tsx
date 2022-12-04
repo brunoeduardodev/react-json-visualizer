@@ -2,6 +2,7 @@ import React from "react";
 import { generateLines } from "@/utils/generateLines";
 import { generateSchema } from "@/utils/generateSchema";
 import { LineRenderer } from "./LineRenderer";
+import { useState } from "react";
 
 type Props = {
   data: object;
@@ -9,7 +10,7 @@ type Props = {
 
 export const TreeRenderer = ({ data }: Props) => {
   const schema = generateSchema({ key: null, value: data });
-  const lines = generateLines(schema, null, 0, 0);
+  const [lines, setLines] = useState(generateLines(schema, null, 0, 0));
 
   return (
     <>
