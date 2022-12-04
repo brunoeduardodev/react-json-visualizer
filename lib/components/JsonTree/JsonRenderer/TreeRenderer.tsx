@@ -1,6 +1,6 @@
 import React from "react";
-import { generateLines } from "../../../utils/generateLines";
-import { generateSchema } from "../../../utils/generateSchema";
+import { generateLines } from "@/utils/generateLines";
+import { generateSchema } from "@/utils/generateSchema";
 import { LineRenderer } from "./LineRenderer";
 
 type Props = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Primitive } from "../../../../types";
+import { Primitive } from "@/types";
 import { BooleanRenderer } from "./BooleanRenderer";
 import { NullRenderer } from "./NullRenderer";
 import { NumberRenderer } from "./NumberRenderer";

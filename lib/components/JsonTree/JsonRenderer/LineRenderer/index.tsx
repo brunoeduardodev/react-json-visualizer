@@ -1,5 +1,5 @@
 import React from "react";
-import { Line } from "../../../../utils/generateLines";
+import { Line } from "@/utils/generateLines";
 import { KeyRenderer } from "../AtomRenderer/KeyRenderer";
 import { ValueRenderer } from "../AtomRenderer/ValueRenderer";
 import {

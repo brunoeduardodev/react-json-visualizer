@@ -1,5 +1,5 @@
 import React from "react";
-import { safeParse } from "../../utils/safeParse";
+import { safeParse } from "@/utils/safeParse";
 import { Container } from "./Container";
 import { JsonRenderer } from "./JsonRenderer";
 

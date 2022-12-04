@@ -1,5 +1,5 @@
 import { WidthIcon } from "@radix-ui/react-icons";
-import { styled } from "../../../../stitches.config";
+import { styled } from "@/stitches.config";
 
 export const LineContainer = styled("div", {
   display: "flex",

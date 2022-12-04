@@ -1,5 +1,5 @@
 import React from "react";
-import { ValidJSON } from "../../../types";
+import { ValidJSON } from "@/types";
 import { TreeRenderer } from "./TreeRenderer";
 import { ValueRenderer } from "./AtomRenderer/ValueRenderer";
 
