@@ -36,7 +36,7 @@ export const generateLines = (
 
     const enclosure = {
       enclosureType,
-      expanded: true,
+      expanded: depth < 2,
       key: entry.key,
       depth,
       parent,
@@ -70,6 +70,7 @@ export const generateLines = (
 
     const enclosureEnd: EnclosureLine = {
       ...enclosure,
+      isVisible: enclosureOpening.isVisible && enclosureOpening.expanded,
       line: lineOffset + contentLines + 2,
       type: "closing",
     };
@@ -84,7 +85,7 @@ export const generateLines = (
       depth,
       isEnclosure: false,
       get isVisible() {
-        return !!this.parent?.isVisible;
+        return !!this.parent?.isVisible && this.parent.expanded;
       },
       get hasNext() {
         if (!this.parent) return false;
