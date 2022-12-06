@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { generateLines } from "@/utils/generateLines";
 import { generateSchema } from "@/utils/generateSchema";
 import { LineRenderer } from "./LineRenderer";
-import { useState } from "react";
 
 type Props = {
   data: object;
 };
 
 export const TreeRenderer = ({ data }: Props) => {
-  const schema = generateSchema({ key: null, value: data });
-  const [lines, setLines] = useState(generateLines(schema, null, 0, 0));
+  const [expandedLines, setExpandedLines] = useState<number[]>([]);
+
+  const lines = useMemo(() => {
+    const schema = generateSchema({ key: null, value: data });
+    return generateLines(schema, null, 0, 0);
+  }, [data]);
 
   return (
     <>
