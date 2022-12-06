@@ -52,7 +52,7 @@ export const LineSkeleton = ({ property, line, depth, children, showComma }: Lin
 
 type Props = {
   line: Line;
-  onExpand?: (line: Line) => void;
+  onExpand?: (lineNumber: number) => void;
 };
 
 export const LineRenderer = ({ line, onExpand }: Props) => {
@@ -86,7 +86,7 @@ export const LineRenderer = ({ line, onExpand }: Props) => {
           {enclosureType === "brackets" && "["}
         </EnclosureCharacter>
 
-        <ExpandButton onClick={() => onExpand && onExpand(line)}>
+        <ExpandButton onClick={() => onExpand && onExpand(lineNumber)}>
           <ExpandIcon />
         </ExpandButton>
 

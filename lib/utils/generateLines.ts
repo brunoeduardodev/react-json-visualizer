@@ -31,16 +31,24 @@ type GenerateLinesOptions = {
   keyIndex?: number;
 };
 
+export type GenerateLinesOverrides = {
+  line: number;
+  expanded?: boolean;
+};
+
 export const generateLines = (
   entry: ValueSchema,
-  { parent = null, depth = 0, lineOffset = 0, keyIndex = 0 }: GenerateLinesOptions
+  { parent = null, depth = 0, lineOffset = 0, keyIndex = 0 }: GenerateLinesOptions,
+  overrides: GenerateLinesOverrides[] = []
 ): Line[] => {
+  const lineOverride = overrides.find((override) => override.line === lineOffset + 1);
+
   if ("entries" in entry) {
     const enclosureType = entry.type === "object" ? "curly" : "brackets";
 
     const enclosure = {
       enclosureType,
-      expanded: depth < 2,
+      expanded: lineOverride?.expanded ?? depth < 2,
       key: entry.key,
       depth,
       parent,
@@ -65,12 +73,16 @@ export const generateLines = (
 
     let contentLines = 0;
     const insideLines = entry.entries.flatMap((entry, index) => {
-      const insideLines = generateLines(entry, {
-        parent: enclosureOpening,
-        depth: depth + 1,
-        keyIndex: index,
-        lineOffset: lineOffset + contentLines + 2,
-      });
+      const insideLines = generateLines(
+        entry,
+        {
+          parent: enclosureOpening,
+          depth: depth + 1,
+          keyIndex: index,
+          lineOffset: lineOffset + contentLines + 2,
+        },
+        overrides
+      );
 
       contentLines += getTotalLinesFromSchema(entry);
 
