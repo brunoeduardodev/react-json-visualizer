@@ -79,7 +79,7 @@ export const generateLines = (
           parent: enclosureOpening,
           depth: depth + 1,
           keyIndex: index,
-          lineOffset: lineOffset + contentLines + 2,
+          lineOffset: lineOffset + contentLines + 1,
         },
         overrides
       );
