@@ -12,7 +12,7 @@ export const TreeRenderer = ({ data }: Props) => {
 
   const lines = useMemo(() => {
     const schema = generateSchema({ key: null, value: data });
-    return generateLines(schema, null, 0, 0);
+    return generateLines(schema, {});
   }, [data]);
 
   return (

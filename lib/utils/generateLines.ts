@@ -24,12 +24,16 @@ type EnclosureLine = {
 
 export type Line = SimpleLine | EnclosureLine;
 
+type GenerateLinesOptions = {
+  parent?: EnclosureLine | null;
+  lineOffset?: number;
+  depth?: number;
+  keyIndex?: number;
+};
+
 export const generateLines = (
   entry: ValueSchema,
-  parent: EnclosureLine | null,
-  lineOffset = 0,
-  depth = 0,
-  keyIndex = 0
+  { parent = null, depth = 0, lineOffset = 0, keyIndex = 0 }: GenerateLinesOptions
 ): Line[] => {
   if ("entries" in entry) {
     const enclosureType = entry.type === "object" ? "curly" : "brackets";
@@ -61,7 +65,12 @@ export const generateLines = (
 
     let contentLines = 0;
     const insideLines = entry.entries.flatMap((entry, index) => {
-      const insideLines = generateLines(entry, enclosureOpening, lineOffset + contentLines + 1, depth + 1, index);
+      const insideLines = generateLines(entry, {
+        parent: enclosureOpening,
+        depth: depth + 1,
+        keyIndex: index,
+        lineOffset: lineOffset + contentLines + 2,
+      });
 
       contentLines += getTotalLinesFromSchema(entry);
 
